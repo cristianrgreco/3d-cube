@@ -12,7 +12,7 @@ class Canvas {
 
     drawCircle(x, y, r) {
         this.context.save();
-        this.context.translate(250, 250);
+        // this.context.translate(250, 250);
         this.context.fillStyle = '#000';
         this.context.beginPath();
         this.context.arc(x, y, r, 0, Math.PI * 2);
@@ -23,7 +23,7 @@ class Canvas {
 
     drawLine(x1, y1, x2, y2) {
         this.context.save();
-        this.context.translate(250, 250);
+        // this.context.translate(250, 250);
         this.context.strokeStyle = '#000';
         this.context.beginPath();
         this.context.moveTo(x1, y1);
@@ -41,7 +41,15 @@ class Vector3 {
         this.z = z;
     }
 
-    mul(scalar) {
+    addVector(vector) {
+        return new Vector3(
+            this.x + vector.x,
+            this.y + vector.y,
+            this.z + vector.z,
+        );
+    }
+
+    multiplyScalar(scalar) {
         return new Vector3(
             this.x * scalar,
             this.y * scalar,
@@ -56,25 +64,29 @@ class Point {
         this.r = r;
     }
 
-    project(projection) {
+    translate(vector) {
+        return new Point(this.pos.addVector(vector), this.r);
+    }
+
+    multiplyMatrix(matrix) {
         const x =
-            projection[0][0] * this.pos.x +
-            projection[0][1] * this.pos.y +
-            projection[0][2] * this.pos.z;
+            matrix[0][0] * this.pos.x +
+            matrix[0][1] * this.pos.y +
+            matrix[0][2] * this.pos.z;
         const y =
-            projection[1][0] * this.pos.x +
-            projection[1][1] * this.pos.y +
-            projection[1][2] * this.pos.z;
+            matrix[1][0] * this.pos.x +
+            matrix[1][1] * this.pos.y +
+            matrix[1][2] * this.pos.z;
         const z =
-            projection[2][0] * this.pos.x +
-            projection[2][1] * this.pos.y +
-            projection[2][2] * this.pos.z;
+            matrix[2][0] * this.pos.x +
+            matrix[2][1] * this.pos.y +
+            matrix[2][2] * this.pos.z;
 
         return new Point(new Vector3(x, y, z), this.r);
     }
 
     scale(scalar) {
-        return new Point(this.pos.mul(scalar), this.r);
+        return new Point(this.pos.multiplyScalar(scalar), this.r);
     }
 
     draw(canvas) {
@@ -89,6 +101,7 @@ const projection = [
     [0, 1, 0],
     [0, 0, 1],
 ];
+const translation = new Vector3(250, 250, 0);
 let angle = 0;
 
 const pointRadius = 2;
@@ -145,11 +158,12 @@ function connectPoints(points) {
     ];
 
     const projectedPoints = points.map(point => point
-        .project(rotationX)
-        .project(rotationY)
-        .project(rotationZ)
+        .multiplyMatrix(rotationX)
+        .multiplyMatrix(rotationY)
+        .multiplyMatrix(rotationZ)
         .scale(100)
-        .project(projection)
+        .translate(translation)
+        .multiplyMatrix(projection)
     );
     projectedPoints.forEach(point => point.draw(canvas));
     connectPoints(projectedPoints);
