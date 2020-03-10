@@ -1,0 +1,160 @@
+class Canvas {
+    constructor() {
+        this.canvas = document.querySelector('#app');
+        this.context = this.canvas.getContext('2d');
+        this.width = this.canvas.width;
+        this.height = this.canvas.height;
+    }
+
+    clear() {
+        this.context.clearRect(0, 0, this.width, this.height);
+    }
+
+    drawCircle(x, y, r) {
+        this.context.save();
+        this.context.translate(250, 250);
+        this.context.fillStyle = '#000';
+        this.context.beginPath();
+        this.context.arc(x, y, r, 0, Math.PI * 2);
+        this.context.closePath();
+        this.context.fill();
+        this.context.restore();
+    }
+
+    drawLine(x1, y1, x2, y2) {
+        this.context.save();
+        this.context.translate(250, 250);
+        this.context.strokeStyle = '#000';
+        this.context.beginPath();
+        this.context.moveTo(x1, y1);
+        this.context.lineTo(x2, y2);
+        this.context.closePath();
+        this.context.stroke();
+        this.context.restore();
+    }
+}
+
+class Vector3 {
+    constructor(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    mul(scalar) {
+        return new Vector3(
+            this.x * scalar,
+            this.y * scalar,
+            this.z * scalar
+        );
+    }
+}
+
+class Point {
+    constructor(pos, r) {
+        this.pos = pos;
+        this.r = r;
+    }
+
+    project(projection) {
+        const x =
+            projection[0][0] * this.pos.x +
+            projection[0][1] * this.pos.y +
+            projection[0][2] * this.pos.z;
+        const y =
+            projection[1][0] * this.pos.x +
+            projection[1][1] * this.pos.y +
+            projection[1][2] * this.pos.z;
+        const z =
+            projection[2][0] * this.pos.x +
+            projection[2][1] * this.pos.y +
+            projection[2][2] * this.pos.z;
+
+        return new Point(new Vector3(x, y, z), this.r);
+    }
+
+    scale(scalar) {
+        return new Point(this.pos.mul(scalar), this.r);
+    }
+
+    draw(canvas) {
+        canvas.drawCircle(this.pos.x, this.pos.y, this.r);
+    }
+}
+
+const canvas = new Canvas();
+
+const projection = [
+    [1, 0, 0],
+    [0, 1, 0],
+    [0, 0, 1],
+];
+let angle = 0;
+
+const pointRadius = 2;
+const points = [
+    new Point(new Vector3(0, 0, 0), pointRadius),
+    new Point(new Vector3(1, 0, 0), pointRadius),
+    new Point(new Vector3(1, 1, 0), pointRadius),
+    new Point(new Vector3(0, 1, 0), pointRadius),
+
+    new Point(new Vector3(0, 0, 1), pointRadius),
+    new Point(new Vector3(1, 0, 1), pointRadius),
+    new Point(new Vector3(1, 1, 1), pointRadius),
+    new Point(new Vector3(0, 1, 1), pointRadius),
+];
+
+function connectPoints(points) {
+    function drawLine(a, b) {
+        canvas.drawLine(a.pos.x, a.pos.y, b.pos.x, b.pos.y,)
+    }
+
+    drawLine(points[0], points[1]);
+    drawLine(points[1], points[2]);
+    drawLine(points[2], points[3]);
+    drawLine(points[3], points[0]);
+
+    drawLine(points[4], points[5]);
+    drawLine(points[5], points[6]);
+    drawLine(points[6], points[7]);
+    drawLine(points[7], points[4]);
+
+    drawLine(points[4], points[0]);
+    drawLine(points[5], points[1]);
+    drawLine(points[6], points[2]);
+    drawLine(points[7], points[3]);
+}
+
+(function draw() {
+    canvas.clear();
+
+    const rotationX = [
+        [1, 0, 0],
+        [0, Math.cos(angle), -Math.sin(angle)],
+        [0, Math.sin(angle), Math.cos(angle)],
+    ];
+    const rotationY = [
+        [Math.cos(angle), 0, -Math.sin(angle)],
+        [0, 1, 0],
+        [Math.sin(angle), 0, Math.cos(angle)],
+    ];
+    const rotationZ = [
+        [Math.cos(angle), -Math.sin(angle), 0],
+        [Math.sin(angle), Math.cos(angle), 0],
+        [0, 0, 1]
+    ];
+
+    const projectedPoints = points.map(point => point
+        .project(rotationX)
+        .project(rotationY)
+        .project(rotationZ)
+        .scale(100)
+        .project(projection)
+    );
+    projectedPoints.forEach(point => point.draw(canvas));
+    connectPoints(projectedPoints);
+
+    angle += 0.03;
+
+    requestAnimationFrame(draw);
+})();
