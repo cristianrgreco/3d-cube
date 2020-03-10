@@ -10,9 +10,9 @@ class Canvas {
         this.context.clearRect(0, 0, this.width, this.height);
     }
 
-    drawCircle(x, y, r) {
+    fillCircle(x, y, r, fillStyle) {
         this.context.save();
-        this.context.fillStyle = '#000';
+        this.context.fillStyle = fillStyle;
         this.context.beginPath();
         this.context.arc(x, y, r, 0, Math.PI * 2);
         this.context.closePath();
@@ -20,9 +20,9 @@ class Canvas {
         this.context.restore();
     }
 
-    drawLine(x1, y1, x2, y2) {
+    strokeLine(x1, y1, x2, y2, strokeStyle) {
         this.context.save();
-        this.context.strokeStyle = '#000';
+        this.context.strokeStyle = strokeStyle;
         this.context.beginPath();
         this.context.moveTo(x1, y1);
         this.context.lineTo(x2, y2);
@@ -88,7 +88,7 @@ class Point {
     }
 
     draw(canvas) {
-        canvas.drawCircle(this.pos.x, this.pos.y, this.r);
+        canvas.fillCircle(this.pos.x, this.pos.y, this.r, '#000');
     }
 }
 
@@ -117,7 +117,7 @@ const points = [
 
 function connectPoints(points) {
     function drawLine(a, b) {
-        canvas.drawLine(a.pos.x, a.pos.y, b.pos.x, b.pos.y,)
+        canvas.strokeLine(a.pos.x, a.pos.y, b.pos.x, b.pos.y, '#000');
     }
 
     drawLine(points[0], points[1]);
