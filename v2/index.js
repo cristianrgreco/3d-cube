@@ -24,6 +24,8 @@ let angle = 0;
 
 function drawAxes() {
     xAxis
+        .transform(v => rotateX(angle).mulVector(v))
+        .transform(v => rotateY(angle).mulVector(v))
         .transform(v => rotateZ(angle).mulVector(v))
         .transform(v => weakProjection(distance, v.z).mulVector(v))
         .transform(v => v.mulScalar(900))
@@ -31,6 +33,8 @@ function drawAxes() {
         .draw(canvas);
 
     yAxis
+        .transform(v => rotateX(angle).mulVector(v))
+        .transform(v => rotateY(angle).mulVector(v))
         .transform(v => rotateZ(angle).mulVector(v))
         .transform(v => weakProjection(distance, v.z).mulVector(v))
         .transform(v => v.mulScalar(900))
@@ -40,6 +44,7 @@ function drawAxes() {
     zAxis
         .transform(v => rotateX(angle).mulVector(v))
         .transform(v => rotateY(angle).mulVector(v))
+        .transform(v => rotateZ(angle).mulVector(v))
         .transform(v => weakProjection(distance, v.z).mulVector(v))
         .transform(v => v.mulScalar(900))
         .transform(v => translation.addVector(v))
@@ -50,6 +55,7 @@ function drawCube() {
     cube
         .transform(v => rotateX(angle).mulVector(v))
         .transform(v => rotateY(angle).mulVector(v))
+        .transform(v => rotateZ(angle).mulVector(v))
         .transform(v => weakProjection(distance, v.z).mulVector(v))
         .transform(v => v.mulScalar(100))
         .transform(v => translation.addVector(v))
