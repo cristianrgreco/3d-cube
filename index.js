@@ -94,13 +94,7 @@ class Point {
 
 const canvas = new Canvas();
 
-const projection = [
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 0, 1],
-];
 const translation = new Vector3(250, 250, 0);
-let angle = 0;
 
 const pointRadius = 2;
 const points = [
@@ -136,6 +130,8 @@ function connectPoints(points) {
     drawLine(points[7], points[3]);
 }
 
+let angle = 0;
+
 (function draw() {
     canvas.clear();
 
@@ -155,14 +151,26 @@ function connectPoints(points) {
         [0, 0, 1]
     ];
 
-    const projectedPoints = points.map(point => point
-        .multiplyMatrix(rotationX)
-        .multiplyMatrix(rotationY)
-        .multiplyMatrix(rotationZ)
-        .scale(100)
-        .translate(translation)
-        .multiplyMatrix(projection)
-    );
+    const projectedPoints = points.map(point => {
+        const transformed = point
+            .multiplyMatrix(rotationX)
+            .multiplyMatrix(rotationY)
+            .multiplyMatrix(rotationZ);
+
+        const distance = 2;
+        const z = 1 / (distance - transformed.pos.z);
+        const projection = [
+            [z, 0, 0],
+            [0, z, 0],
+            [0, 0, 1]
+        ];
+
+        return transformed
+            .multiplyMatrix(projection)
+            .scale(100)
+            .translate(translation);
+    });
+
     projectedPoints.forEach(point => point.draw(canvas));
     connectPoints(projectedPoints);
 
