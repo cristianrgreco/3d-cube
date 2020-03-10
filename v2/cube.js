@@ -1,6 +1,21 @@
+import {Vector3} from "./vector3";
+
 export class Cube {
     constructor(vertices) {
-        this.vertices = vertices;
+        if (vertices) {
+            this.vertices = vertices;
+        } else {
+            this.vertices = [
+                new Vector3(-0.5, -0.5, -0.5),
+                new Vector3(0.5, -0.5, -0.5),
+                new Vector3(0.5, 0.5, -0.5),
+                new Vector3(-0.5, 0.5, -0.5),
+                new Vector3(-0.5, -0.5, 0.5),
+                new Vector3(0.5, -0.5, 0.5),
+                new Vector3(0.5, 0.5, 0.5),
+                new Vector3(-0.5, 0.5, 0.5),
+            ];
+        }
     }
 
     transform(transformation) {
