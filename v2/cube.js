@@ -32,20 +32,11 @@ export class Cube {
     }
 
     connectVertices(canvas) {
-        this.connectLine(canvas, this.vertices[0], this.vertices[1]);
-        this.connectLine(canvas, this.vertices[1], this.vertices[2]);
-        this.connectLine(canvas, this.vertices[2], this.vertices[3]);
-        this.connectLine(canvas, this.vertices[3], this.vertices[0]);
-
-        this.connectLine(canvas, this.vertices[4], this.vertices[5]);
-        this.connectLine(canvas, this.vertices[5], this.vertices[6]);
-        this.connectLine(canvas, this.vertices[6], this.vertices[7]);
-        this.connectLine(canvas, this.vertices[7], this.vertices[4]);
-
-        this.connectLine(canvas, this.vertices[4], this.vertices[0]);
-        this.connectLine(canvas, this.vertices[5], this.vertices[1]);
-        this.connectLine(canvas, this.vertices[6], this.vertices[2]);
-        this.connectLine(canvas, this.vertices[7], this.vertices[3]);
+        for (let i = 0; i < this.vertices.length; i++) {
+            this.connectLine(canvas, this.vertices[i % 4], this.vertices[(i + 1) % 4]);
+            this.connectLine(canvas, this.vertices[i % 4 + 4], this.vertices[(i + 1) % 4 + 4]);
+            this.connectLine(canvas, this.vertices[i % 4 + 4], this.vertices[i % 4]);
+        }
     }
 
     connectLine(canvas, a, b) {
