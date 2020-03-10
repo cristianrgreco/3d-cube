@@ -2,7 +2,7 @@
   "name": "3d-cube",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "v1/index.js",
   "scripts": {
     "start": "parcel index.html"
   },
