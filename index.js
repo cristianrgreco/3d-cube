@@ -12,7 +12,6 @@ class Canvas {
 
     drawCircle(x, y, r) {
         this.context.save();
-        // this.context.translate(250, 250);
         this.context.fillStyle = '#000';
         this.context.beginPath();
         this.context.arc(x, y, r, 0, Math.PI * 2);
@@ -23,7 +22,6 @@ class Canvas {
 
     drawLine(x1, y1, x2, y2) {
         this.context.save();
-        // this.context.translate(250, 250);
         this.context.strokeStyle = '#000';
         this.context.beginPath();
         this.context.moveTo(x1, y1);
