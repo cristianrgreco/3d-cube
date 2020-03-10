@@ -8,7 +8,7 @@ export class Canvas {
 
     clear() {
         this.context.clearRect(0, 0, this.width, this.height);
-        this.context.fillStyle = '#000';
+        this.context.fillStyle = '#fff';
         this.context.fillRect(0, 0, this.width, this.height);
     }
 

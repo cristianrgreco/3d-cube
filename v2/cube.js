@@ -13,7 +13,7 @@ export class Cube {
     }
 
     drawPoints(canvas) {
-        this.vertices.forEach(v => canvas.fillCircle(v.x, v.y, 2, '#fff'));
+        this.vertices.forEach(v => canvas.fillCircle(v.x, v.y, 2, '#000'));
     }
 
     connectVertices(canvas) {
@@ -34,6 +34,6 @@ export class Cube {
     }
 
     connectLine(canvas, a, b) {
-        canvas.strokeLine(a.x, a.y, b.x, b.y, '#fff');
+        canvas.strokeLine(a.x, a.y, b.x, b.y, '#000');
     }
 }

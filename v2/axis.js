@@ -15,7 +15,7 @@ export class Axis {
             canvas.strokeLine(
                 vertex.x, vertex.y,
                 nextVertex.x, nextVertex.y,
-                '#fff',
+                '#000',
                 'dashed'
             );
         }
