@@ -12,6 +12,14 @@ export class Canvas {
         this.context.fillRect(0, 0, this.width, this.height);
     }
 
+    fillText(text, x, y, font, fillStyle) {
+        this.context.save();
+        this.context.font = font;
+        this.context.fillStyle = fillStyle;
+        this.context.fillText(text, x, y);
+        this.context.restore();
+    }
+
     fillCircle(x, y, r, fillStyle) {
         this.context.save();
         this.context.fillStyle = fillStyle;
