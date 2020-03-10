@@ -47,8 +47,7 @@ export const ORTHOGRAPHIC_PROJECTION = new Matrix([
     [0, 0, 1],
 ]);
 
-export const weakProjection = z => {
-    const distance = 1;
+export const weakProjection = (distance, z) => {
     const scale = 1 / (distance - z);
 
     return new Matrix([
