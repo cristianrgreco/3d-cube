@@ -1,11 +1,16 @@
 export class Axis {
-    constructor(label, vertices) {
+    constructor(label, begin, end) {
         this.label = label;
-        this.vertices = vertices;
+        this.begin = begin;
+        this.end = end;
     }
 
     transform(transformation) {
-        return new Axis(this.label, this.vertices.map(v => transformation(v)));
+        return new Axis(
+            this.label,
+            transformation(this.begin),
+            transformation(this.end)
+        );
     }
 
     draw(canvas) {
@@ -14,22 +19,16 @@ export class Axis {
     }
 
     drawLabels(canvas) {
-        this.vertices.forEach(v =>
-            canvas.fillText(this.label, v.x, v.y, '20px sans-serif', '#000')
-        );
+        canvas.fillText(this.label, this.begin.x, this.begin.y, '20px serif', '#000');
+        canvas.fillText(this.label, this.end.x, this.end.y, '20px serif', '#000');
     }
 
     connectVertices(canvas) {
-        for (let i = 0; i < this.vertices.length - 1; i++) {
-            const vertex = this.vertices[i];
-            const nextVertex = this.vertices[i + 1];
-
-            canvas.strokeLine(
-                vertex.x, vertex.y,
-                nextVertex.x, nextVertex.y,
-                '#000',
-                'dashed'
-            );
-        }
+        canvas.strokeLine(
+            this.begin.x, this.begin.y,
+            this.end.x, this.end.y,
+            '#000',
+            'dashed'
+        );
     }
 }
