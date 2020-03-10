@@ -3,21 +3,29 @@ export class Axis {
         this.vertices = vertices;
     }
 
-    translate(vector) {
-        return new Axis(this.vertices.map(v => v.addVector(vector)));
+    transform(transformation) {
+        return new Axis(this.vertices.map(v => transformation(v)));
     }
 
-    scale(scalar) {
-        return new Axis(this.vertices.map(v => v.mulScalar(scalar)));
-    }
-
-    rotate(matrix) {
-        return new Axis(this.vertices.map(v => matrix.mulVector(v)));
-    }
-
-    project(matrix) {
-        return new Axis(this.vertices.map(v => matrix.mulVector(v)));
-    }
+    // translate(vector) {
+    //     return new Axis(this.vertices.map(v => v.addVector(vector)));
+    // }
+    //
+    // scale(scalar) {
+    //     return new Axis(this.vertices.map(v => v.mulScalar(scalar)));
+    // }
+    //
+    // rotate(matrix) {
+    //     return new Axis(this.vertices.map(v => matrix.mulVector(v)));
+    // }
+    //
+    // project(matrix) {
+    //     return new Axis(this.vertices.map(v => matrix.mulVector(v)));
+    // }
+    //
+    // projectFn(fn) {
+    //     return new Axis(this.vertices.map(v => fn(v)));
+    // }
 
     draw(canvas) {
         for (let i = 0; i < this.vertices.length - 1; i++) {
@@ -27,7 +35,8 @@ export class Axis {
             canvas.strokeLine(
                 vertex.x, vertex.y,
                 nextVertex.x, nextVertex.y,
-                '#fff', 'dashed'
+                '#fff',
+                'dashed'
             );
         }
     }

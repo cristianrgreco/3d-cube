@@ -3,21 +3,29 @@ export class Cube {
         this.vertices = vertices;
     }
 
-    translate(vector) {
-        return new Cube(this.vertices.map(v => v.addVector(vector)));
+    transform(transformation) {
+        return new Cube(this.vertices.map(v => transformation(v)));
     }
 
-    scale(scalar) {
-        return new Cube(this.vertices.map(v => v.mulScalar(scalar)));
-    }
-
-    rotate(matrix) {
-        return new Cube(this.vertices.map(v => matrix.mulVector(v)));
-    }
-
-    project(matrix) {
-        return new Cube(this.vertices.map(v => matrix.mulVector(v)));
-    }
+    // translate(vector) {
+    //     return new Cube(this.vertices.map(v => v.addVector(vector)));
+    // }
+    //
+    // scale(scalar) {
+    //     return new Cube(this.vertices.map(v => v.mulScalar(scalar)));
+    // }
+    //
+    // rotate(matrix) {
+    //     return new Cube(this.vertices.map(v => matrix.mulVector(v)));
+    // }
+    //
+    // project(matrix) {
+    //     return new Cube(this.vertices.map(v => matrix.mulVector(v)));
+    // }
+    //
+    // projectFn(fn) {
+    //     return new Cube(this.vertices.map(v => fn(v)));
+    // }
 
     draw(canvas) {
         this.vertices.forEach(v => canvas.fillCircle(v.x, v.y, 2, '#fff'));

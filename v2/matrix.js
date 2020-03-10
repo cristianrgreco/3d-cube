@@ -40,3 +40,20 @@ export const rotateZ = angle => new Matrix([
     [Math.sin(angle), Math.cos(angle), 0],
     [0, 0, 1]
 ]);
+
+export const ORTHOGRAPHIC_PROJECTION = new Matrix([
+    [1, 0, 0],
+    [0, 1, 0],
+    [0, 0, 1],
+]);
+
+export const weakProjection = z => {
+    const distance = 1;
+    const scale = 1 / (distance - z);
+
+    return new Matrix([
+        [scale, 0, 0],
+        [0, scale, 0],
+        [0, 0, 1],
+    ]);
+};
