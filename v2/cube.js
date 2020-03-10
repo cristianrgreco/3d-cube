@@ -7,29 +7,16 @@ export class Cube {
         return new Cube(this.vertices.map(v => transformation(v)));
     }
 
-    // translate(vector) {
-    //     return new Cube(this.vertices.map(v => v.addVector(vector)));
-    // }
-    //
-    // scale(scalar) {
-    //     return new Cube(this.vertices.map(v => v.mulScalar(scalar)));
-    // }
-    //
-    // rotate(matrix) {
-    //     return new Cube(this.vertices.map(v => matrix.mulVector(v)));
-    // }
-    //
-    // project(matrix) {
-    //     return new Cube(this.vertices.map(v => matrix.mulVector(v)));
-    // }
-    //
-    // projectFn(fn) {
-    //     return new Cube(this.vertices.map(v => fn(v)));
-    // }
-
     draw(canvas) {
-        this.vertices.forEach(v => canvas.fillCircle(v.x, v.y, 2, '#fff'));
+        this.drawPoints(canvas);
+        this.connectVertices(canvas);
+    }
 
+    drawPoints(canvas) {
+        this.vertices.forEach(v => canvas.fillCircle(v.x, v.y, 2, '#fff'));
+    }
+
+    connectVertices(canvas) {
         this.connectLine(canvas, this.vertices[0], this.vertices[1]);
         this.connectLine(canvas, this.vertices[1], this.vertices[2]);
         this.connectLine(canvas, this.vertices[2], this.vertices[3]);
