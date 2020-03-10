@@ -94,19 +94,19 @@ class Point {
 
 const canvas = new Canvas();
 
-const translation = new Vector3(250, 250, 0);
+const translation = new Vector3(450, 250, 0);
 
 const pointRadius = 2;
 const points = [
-    new Point(new Vector3(0, 0, 0), pointRadius),
-    new Point(new Vector3(1, 0, 0), pointRadius),
-    new Point(new Vector3(1, 1, 0), pointRadius),
-    new Point(new Vector3(0, 1, 0), pointRadius),
+    new Point(new Vector3(-0.5, -0.5, -0.5), pointRadius),
+    new Point(new Vector3(0.5, -0.5, -0.5), pointRadius),
+    new Point(new Vector3(0.5, 0.5, -0.5), pointRadius),
+    new Point(new Vector3(-0.5, 0.5, -0.5), pointRadius),
 
-    new Point(new Vector3(0, 0, 1), pointRadius),
-    new Point(new Vector3(1, 0, 1), pointRadius),
-    new Point(new Vector3(1, 1, 1), pointRadius),
-    new Point(new Vector3(0, 1, 1), pointRadius),
+    new Point(new Vector3(-0.5, -0.5, 0.5), pointRadius),
+    new Point(new Vector3(0.5, -0.5, 0.5), pointRadius),
+    new Point(new Vector3(0.5, 0.5, 0.5), pointRadius),
+    new Point(new Vector3(-0.5, 0.5, 0.5), pointRadius),
 ];
 
 function connectPoints(points) {
@@ -157,13 +157,8 @@ let angle = 0;
             .multiplyMatrix(rotationY)
             .multiplyMatrix(rotationZ);
 
-        const distance = 2;
-        const z = 1 / (distance - transformed.pos.z);
-        const projection = [
-            [z, 0, 0],
-            [0, z, 0],
-            [0, 0, 1]
-        ];
+        const distance = 1.5;
+        const projection = weakPerspectiveProjection(distance, transformed.pos.z);
 
         return transformed
             .multiplyMatrix(projection)
@@ -178,3 +173,21 @@ let angle = 0;
 
     requestAnimationFrame(draw);
 })();
+
+function weakPerspectiveProjection(distance, z) {
+    const scale = 1 / (distance - z);
+
+    return [
+        [scale, 0, 0],
+        [0, scale, 0],
+        [0, 0, 1]
+    ];
+}
+
+function orthographicProjection() {
+    return [
+        [1, 0, 0],
+        [0, 1, 0],
+        [0, 0, 1]
+    ];
+}
