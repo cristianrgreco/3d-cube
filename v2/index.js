@@ -18,7 +18,7 @@ let angle = 0;
     canvas.clear();
     drawAxes();
     drawCube();
-    angle += 0.01;
+    angle += 0.005;
     requestAnimationFrame(draw);
 })();
 
